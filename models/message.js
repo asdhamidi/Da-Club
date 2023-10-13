@@ -9,6 +9,11 @@ const MessageSchema = new Schema({
     required: true,
     maxLength: 500,
   },
+  name: {
+    type: String,
+    required: true,
+    maxLength: 50,
+  },
   username: {
     type: String,
     required: true,
@@ -24,10 +29,6 @@ MessageSchema.virtual("added_formatted").get(function () {
   return DateTime.fromJSDate(this.added, { zone: "Asia/Kolkata" }).toFormat(
     "t, DD"
   );
-});
-
-MessageSchema.virtual("name").get(async function () {
-  return await User.findOne({ username: this.username });
 });
 
 module.exports = mongoose.model("Message", MessageSchema);

@@ -12,7 +12,7 @@ const Message = require("../models/message");
 
 // GET methods
 router.get("/", async (req, res) => {
-  const msgs = await Message.find({}).exec();
+  const msgs = await Message.find({}).sort({ added: -1 }).exec();
   res.render("index", { messages: msgs });
 });
 router.get("/signup", (req, res) => res.render("signup"));
@@ -25,6 +25,7 @@ router.get("/logout", (req, res, next) => {
     res.redirect("/");
   });
 });
+router.get("/new", (req, res) => res.render("new"));
 router.get("/makeMember", (req, res) => res.render("makeMember"));
 router.get("/makeAdmin", (req, res) => res.render("makeAdmin"));
 
@@ -92,7 +93,7 @@ router.post(
         });
         await user.save();
 
-        res.render("index");
+        res.redirect("/");
       } catch (error) {
         // Handle errors
         console.error("Error during registration:", error);
@@ -117,9 +118,9 @@ passport.use(
       if (!user) {
         return done(null, false, { message: "Incorrect username" });
       }
+
       const match = await bcrypt.compare(password, user.password);
-      // const match = password !== user.password;
-      if (match) {
+      if (!match) {
         // passwords do not match!
         return done(null, false, { message: "Incorrect password" });
       }
@@ -144,11 +145,38 @@ passport.deserializeUser(async (id, done) => {
 });
 
 router.post(
+  "/new",
+  asyncHandler(async (req, res, next) => {
+    console.log(res.locals.user);
+    const newMessage = new Message({
+      text: req.body.message,
+      username: res.locals.user.username,
+      name: res.locals.user.name,
+      added: new Date(),
+    });
+
+    await newMessage.save();
+    res.redirect("/");
+  })
+);
+
+router.post(
+  "/delete/:id",
+  asyncHandler(async (req, res, next) => {
+    try {
+      await Message.findByIdAndRemove(req.params.id);
+      res.redirect("/");
+    } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  })
+);
+
+router.post(
   "/makeMember",
   asyncHandler(async (req, res, next) => {
     if (req.body.code === process.env.MEMBER_CODE) {
       try {
-        console.log(res.locals);
         // Find the current user
         const user = await User.findOne({
           username: res.locals.user.username,

@@ -5,20 +5,31 @@
         <h1>Hello,
           <%= user.firstName %>!
         </h1>
+        <a id="new-message" href="/new">
+          <button>
+            +
+          </button>
+        </a>
       </div>
     <% } %>
     <div class="messages">
       <% messages.forEach(function(item) { %>
         <div class="message">
-          <% if (user && user.isMember) { %>
-            <h1 class="message-name">
-              <%= item.username%>
-            </h1>
+          <% if (user && (user.isMember || user.isAdmin)) { %>
+            <p class="message-name">
+              <%= item.name%>
+            </p>
+            <p class="message-username">@<%= item.username %></p>
           <% } %>
           <div class="message-content">
             <p class="message-text"><%= item.text %></p>
             <p class="message-time"><%= item.added_formatted %></p>
           </div>
+          <% if (user && user.isAdmin) { %>
+            <form action="/delete/<%= item.id %>" method="post">
+              <button class="delete" type="submit">Delete</button>
+            </form>
+          <% } %>
         </div>
         <% }); %>
         </div>

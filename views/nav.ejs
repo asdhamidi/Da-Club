@@ -9,27 +9,30 @@
   <body>
     <nav>
       <div class="icon">
-        <h1>
-          <a href="/">
-            Da Club</a>
-        </h1>
+        <a href="/">
+          Da Club</a>
       </div>
       <div class="links">
         <% if (user) { %>
-          <h1>
+          <button>
             <a href="/makeMember">
               Become a Member
             </a>
-            <h1>
+            <button>
               <a href="/makeAdmin">
                 Become a Admin
               </a>
-            </h1>
-            <h1>
+            </button>
+            <button>
               <a href="/logout">LOG OUT</a>
-            </h1>
+            </button>
           <% } else {%>
-            <a href="/login">LOG IN</a>
+            <button>
+              <a href="/login">LOG IN</a>
+            </button>
+            <button>
+              <a href="/signup">SIGN UP</a>
+            </button>
           <% } %>
 
         </div>
