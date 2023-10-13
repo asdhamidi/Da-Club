@@ -1,0 +1,26 @@
+<%- include('nav') -%>
+  <main>
+    <% if (user) { %>
+      <div class="welcome">
+        <h1>Hello,
+          <%= user.firstName %>!
+        </h1>
+      </div>
+    <% } %>
+    <div class="messages">
+      <% messages.forEach(function(item) { %>
+        <div class="message">
+          <% if (user && user.isMember) { %>
+            <h1 class="message-name">
+              <%= item.username%>
+            </h1>
+          <% } %>
+          <div class="message-content">
+            <p class="message-text"><%= item.text %></p>
+            <p class="message-time"><%= item.added_formatted %></p>
+          </div>
+        </div>
+        <% }); %>
+        </div>
+      </main>
+      <%- include('footer') -%>

@@ -1,0 +1,10 @@
+<%- include('nav') -%>
+  <main>
+    <h1>Become a Memeber</h1>
+    <form action="/makeMember" method="post">
+      <label for="code">Enter Secret Code</label>
+      <input type="number" name="code"/>
+      <button type="submit">Submit</button>
+    </form>
+  </main>
+  <%- include('footer') -%>
