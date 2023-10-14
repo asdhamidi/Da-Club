@@ -1,3 +1,7 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<%- include('nav') -%>
+
+  <h1>Oops! Looks like we hit a deadend!</h1>
+  <h2><%= message %></h2>
+  <span><%= error.status %></span>
+
+  <%- include('footer') -%>

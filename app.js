@@ -1,9 +1,11 @@
 const createError = require("http-errors");
 const express = require("express");
+require("dotenv").config();
+
 // Setting up DB connection
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const mongoDB = "mongodb://localhost:27017/test";
+const mongoDB = process.env.MONGO_URI;
 
 main().catch((err) => console.log(err));
 async function main() {
@@ -16,7 +18,6 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const controllers = require("./routes/controllers");
-require("dotenv").config();
 
 const app = express();
 
