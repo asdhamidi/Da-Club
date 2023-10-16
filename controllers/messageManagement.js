@@ -2,7 +2,6 @@ const asyncHandler = require("express-async-handler");
 const Message = require("../models/message");
 
 exports.newMessage = asyncHandler(async (req, res, next) => {
-  console.log(res.locals.user);
   const newMessage = new Message({
     text: req.body.message,
     username: res.locals.user.username,

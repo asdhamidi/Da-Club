@@ -7,7 +7,7 @@ const { body, validationResult } = require("express-validator");
 const User = require("../models/user");
 
 // POST methods
-(exports.signup = [
+exports.signup = [
   body("firstName")
     .trim()
     .isLength({ min: 1 })
@@ -36,7 +36,7 @@ const User = require("../models/user");
     }
     return true;
   }),
-]),
+
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
@@ -67,14 +67,15 @@ const User = require("../models/user");
         });
         await user.save();
 
-        res.redirect("/");
+        res.redirect("/login");
       } catch (error) {
         // Handle errors
         console.error("Error during registration:", error);
         res.status(500).send("Error during registration");
       }
     }
-  });
+  }),
+];
 
 exports.login = passport.authenticate("local", {
   successRedirect: "/",
